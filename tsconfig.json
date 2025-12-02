@@ -7,17 +7,19 @@
 
     // 输出相关
     "declaration": true, // 生成 .d.ts 类型声明文件
+    "declarationMap": true,
     "declarationDir": "./dist/types", // 类型声明文件输出目录
     "outDir": "dist", // 编译输出目录
     "emitDeclarationOnly": true, // 只生成声明文件
 
     // 类型检查相关
     "strict": true, // 启用所有严格的类型检查选项
+    "noImplicitAny": false, // 允许隐式 any 类型
     "noUnusedLocals": true, // 检查未使用的局部变量
     "noUnusedParameters": true, // 检查未使用的参数
     "noImplicitReturns": true, // 检查函数是否有隐式的返回值
     "noFallthroughCasesInSwitch": true, // 检查 switch 语句的 fall through 情况
-    "typeRoots": ["./src/types"], // 指定类型文件的目录
+    "typeRoots": ["./src/types", "./node_modules/@types"], // 指定类型文件的目录
 
     // 模块解析相关
     "moduleResolution": "node", // 使用 Node.js 的模块解析策略

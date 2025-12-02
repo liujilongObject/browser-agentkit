@@ -5,4 +5,5 @@ dist
 *.log
 coverage
 .idea
-.vscode 
+.vscode
+.claude

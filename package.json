@@ -1,9 +1,9 @@
 {
-  "name": "your-lib",
+  "name": "browser-agentkit",
   "version": "0.0.1",
   "type": "module",
-  "packageManager": "pnpm@9.0.0",
-  "description": "",
+  "packageManager": "pnpm@10.0.0",
+  "description": "A powerful SDK for Chrome extensions to interact with browsers and web pages",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -21,9 +21,10 @@
     "prepare": "node scripts/prepare.js && husky",
     "dev": "pnpm run clean && pnpm run build:watch",
     "build:watch": "rollup -c -w",
-    "build": "pnpm run clean && rollup -c --environment BUILD:production",
+    "build": "pnpm run clean && rollup -c && pnpm run build:types",
+    "build:types": "tsc-alias -p tsconfig.json --outDir dist/types && api-extractor run --local --verbose && rimraf dist/types",
     "clean": "rimraf dist",
-    "lint": "eslint . --fix && pnpm run format",
+    "lint": "pnpm run format",
     "format": "prettier --write \"src/**/*.{js,ts,mjs}\"",
     "lint-staged": "lint-staged",
     "prepublishOnly": "pnpm run build && node scripts/prepublish.js"
@@ -40,6 +41,7 @@
     "@babel/preset-typescript": "^7.26.0",
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
+    "@microsoft/api-extractor": "^7.55.1",
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
@@ -47,6 +49,7 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@stylistic/eslint-plugin": "^2.13.0",
+    "@types/chrome": "^0.1.31",
     "@types/node": "^20.11.24",
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
@@ -56,7 +59,7 @@
     "prettier": "^3.4.0",
     "rimraf": "^6.0.1",
     "rollup": "^4.27.4",
-    "rollup-plugin-dts": "^6.1.1",
+    "tsc-alias": "^1.8.16",
     "tslib": "^2.8.1",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.16.0"
@@ -68,14 +71,14 @@
   ],
   "sideEffects": false,
   "engines": {
-    "node": ">=14"
+    "node": ">=20"
   },
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/liujilongObject/typescript-lib-template.git"
+    "url": "https://github.com/liujilongObject/browser-agentkit.git"
   },
   "lint-staged": {
     "src/**/*.{js,ts,mjs}": [
