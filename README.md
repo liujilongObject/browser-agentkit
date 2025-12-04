@@ -314,8 +314,8 @@ Main class for page-level operations.
 |--------|-------------|
 | `initialize()` | Initializes the page (must call before other methods) |
 | `close()` | Cleans up resources |
-| `click(selector)` | Clicks an element |
-| `fill(selector, text)` | Fills an input field |
+| `click(selector)` | Clicks an element, The param `selector` can be any CSS selector or a string in the format `node=id`, e.g. `"node=123"`. |
+| `fill(selector, text)` | Fills an input field, The param `selector` can be any CSS selector or a string in the format `node=id`, e.g. `"node=123"`. |
 | `scroll(direction, amount?)` | Scrolls the page |
 | `navigate(url)` | Navigates to URL |
 | `waitForNavigation(options?)` | Waits for navigation to complete |
@@ -361,7 +361,7 @@ Represents a DOM element for interaction.
 | `getText()` | Gets element's text content |
 | `getAttributeValue(name)` | Gets attribute value |
 | `scrollIntoView()` | Scrolls element into view |
-| `findElement()` | Finds element and returns node IDs |
+| `findElementNodeIds()` | Finds element and returns node IDs |
 
 #### ContentExtractor
 
@@ -370,7 +370,7 @@ Extracts content from web pages.
 | Method | Description |
 |--------|-------------|
 | `getPageSnapshot(options?)` | Gets page snapshot with HTML and metadata |
-| `getHTML(options?)` | Gets HTML content (options: `{ viewportOnly?: boolean }`) |
+| `getHTML(options?)` | Gets Structured HTML Content (options: `{ viewportOnly?: boolean }`). Every interactive DOM element has a unique "node" attribute, e.g. `...<button onclick="..." node="1234"></button>...`. |
 | `getText()` | Gets plain text content |
 | `getMetadata()` | Gets page metadata (title, description, etc.) |
 | `getElementContent(selector)` | Gets element's HTML and text content |

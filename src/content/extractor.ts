@@ -236,6 +236,7 @@ export class ContentExtractor {
 
   /**
    * Gets HTML content
+   * @param {boolean}[options.viewportOnly] extract only the HTML within the visible area
    */
   async getHTML(options: { viewportOnly?: boolean } = {}): Promise<string> {
     const content = await this.getPageSnapshot(options)

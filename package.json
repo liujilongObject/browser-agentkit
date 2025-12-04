@@ -1,6 +1,6 @@
 {
   "name": "browser-agentkit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "packageManager": "pnpm@10.0.0",
   "description": "A powerful SDK for Chrome extensions to interact with browsers and web pages",
@@ -29,7 +29,13 @@
     "lint-staged": "lint-staged",
     "prepublishOnly": "pnpm run build && node scripts/prepublish.js"
   },
-  "keywords": [],
+  "keywords": [
+    "browser agent",
+    "browser automation",
+    "web page automation",
+    "Chrome extension development",
+    "Structured HTML Data"
+  ],
   "author": "liu4426350@qq.com",
   "dependencies": {
     "@babel/runtime": "^7.26.0"

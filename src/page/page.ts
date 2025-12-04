@@ -104,6 +104,7 @@ export class Page {
 
   /**
    * Creates an PageElement object
+   * @param selector any CSS selector
    */
   element(selector: string): PageElement {
     return new PageElement(this.tabId, selector)

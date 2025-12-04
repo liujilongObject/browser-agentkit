@@ -47,7 +47,7 @@ export class PageElement {
    */
   async exists(): Promise<boolean> {
     try {
-      await this.findElement()
+      await this.findElementNodeIds()
       return true
     } catch {
       return false
@@ -58,7 +58,7 @@ export class PageElement {
    * Gets the bounding box of the element
    */
   async getBoundingBox(): Promise<BoundingBox> {
-    const { nodeId } = await this.findElement()
+    const { nodeId } = await this.findElementNodeIds()
 
     const { model } = (await chrome.debugger.sendCommand(this.debuggee, 'DOM.getBoxModel', {
       nodeId,
@@ -81,7 +81,7 @@ export class PageElement {
    * Gets the text content of the element
    */
   async getText(): Promise<string | undefined> {
-    const { nodeId } = await this.findElement()
+    const { nodeId } = await this.findElementNodeIds()
 
     const { outerHTML } = (await chrome.debugger.sendCommand(this.debuggee, 'DOM.getOuterHTML', {
       nodeId,
@@ -105,7 +105,7 @@ export class PageElement {
    * Gets attribute value
    */
   async getAttributeValue(name: string): Promise<string | null> {
-    const { nodeId } = await this.findElement()
+    const { nodeId } = await this.findElementNodeIds()
 
     try {
       const { attributes } = (await chrome.debugger.sendCommand(
@@ -132,7 +132,7 @@ export class PageElement {
    * Scrolls the element into view
    */
   async scrollIntoView(): Promise<void> {
-    const { nodeId } = await this.findElement()
+    const { nodeId } = await this.findElementNodeIds()
 
     await chrome.debugger.sendCommand(this.debuggee, 'DOM.scrollIntoViewIfNeeded', {
       nodeId,
@@ -140,9 +140,9 @@ export class PageElement {
   }
 
   /**
-   * Finds the element using the selector
+   * Finds the element's node ids using the CSS selector
    */
-  async findElement(): Promise<{ nodeId: number; backendNodeId: number }> {
+  async findElementNodeIds(): Promise<{ nodeId: number; backendNodeId: number }> {
     // Query for the element
     const { root } = (await chrome.debugger.sendCommand(this.debuggee, 'DOM.getDocument', {
       depth: 1,

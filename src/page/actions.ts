@@ -16,6 +16,7 @@ export enum ScrollDirection {
 
 /**
  * Resolves an AXNode selector to a DOM node ID
+ * @param selector The selector can be any CSS selector or a string in the format `node=id`, e.g. `"node=123"`.
  */
 async function resolveAxNode(
   tabId: number,
@@ -27,7 +28,7 @@ async function resolveAxNode(
 
   if (!nodeIdString) {
     const element = new PageElement(tabId, selector)
-    nodeIdString = (await element.findElement()).backendNodeId.toString()
+    nodeIdString = (await element.findElementNodeIds()).backendNodeId.toString()
   }
 
   const backendNodeId = Number(nodeIdString)
@@ -72,6 +73,7 @@ export class Actions {
 
   /**
    * Clicks an element
+   * @param selector The selector can be any CSS selector or a string in the format `node=id`, e.g. `"node=123"`.
    */
   async click(selector: string): Promise<void> {
     const { nodeId, object, debuggee } = await resolveAxNode(this.tabId, selector)
@@ -171,6 +173,7 @@ export class Actions {
 
   /**
    * Fills an input element
+   * @param selector The selector can be any CSS selector or a string in the format `node=id`, e.g. `"node=123"`.
    */
   async fill(selector: string, value: string): Promise<void> {
     const { nodeId, debuggee } = await resolveAxNode(this.tabId, selector)
@@ -196,6 +199,7 @@ export class Actions {
 
   /**
    * Searches by filling an input and pressing Enter
+   * @param selector The selector can be any CSS selector or a string in the format `node=id`, e.g. `"node=123"`.
    */
   async search(selector: string, value: string): Promise<void> {
     await this.fill(selector, value)
@@ -251,6 +255,7 @@ export class Actions {
 
   /**
    * Waits for an element to appear
+   * @param selector The selector can be any CSS selector or a string in the format `node=id`, e.g. `"node=123"`.
    */
   async waitForSelector(selector: string, options: { timeout?: number } = {}): Promise<void> {
     const { timeout = 30000 } = options
