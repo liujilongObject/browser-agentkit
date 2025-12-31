@@ -334,7 +334,7 @@ Standalone class for page actions (used internally by Page).
 | Method | Description |
 |--------|-------------|
 | `click(selector)` | Clicks an element |
-| `fill(selector, value)` | Fills an input field |
+| `fill(selector, value, usePaste?)` | Fills an input field; Supports inputting content using the system clipboard. |
 | `search(selector, value)` | Fills input and presses Enter |
 | `scroll(direction, amount?)` | Scrolls the page |
 | `waitForSelector(selector, options?)` | Waits for element to appear |

@@ -4,8 +4,9 @@
 
 import { Debuggee } from '@/types'
 import { RemoteObject, DOMNode, BoxModel } from '@/types/cdp'
-import { createKeyboard } from '@/input/index'
+import { createKeyboard, Keyboard } from '@/input/index'
 import { PageElement } from '@/page/element'
+import { evaluateFunctionInTarget } from '@/utils'
 
 export enum ScrollDirection {
   UP = 'UP',
@@ -174,8 +175,10 @@ export class Actions {
   /**
    * Fills an input element
    * @param selector The selector can be any CSS selector or a string in the format `node=id`, e.g. `"node=123"`.
+   * @param value The required input content
+   * @param usePaste Use clipboard paste?
    */
-  async fill(selector: string, value: string): Promise<void> {
+  async fill(selector: string, value: string, usePaste?: false): Promise<void> {
     const { nodeId, debuggee } = await resolveAxNode(this.tabId, selector)
 
     try {
@@ -193,8 +196,63 @@ export class Actions {
       return
     }
 
+    if (usePaste) {
+      await keyboard.press('ControlOrMeta+KeyA')
+      await keyboard.press('Backspace')
+      await this.pasteTextWithClipboard(debuggee, { text: value }, keyboard)
+      return
+    }
+
     await keyboard.press('ControlOrMeta+KeyA')
     await keyboard.insertText(value)
+  }
+
+  // 使用剪贴板将文本写入到目标元素中
+  async pasteTextWithClipboard(
+    debuggee: Debuggee,
+    params: { text: string; mimeType?: string },
+    keyboard: Keyboard
+  ) {
+    // 缓存浏览器原始剪贴板内容
+    await evaluateFunctionInTarget(debuggee, async () => {
+      try {
+        // @ts-expect-error 读取原生剪贴板所有内容并临时存入全局变量
+        window._savedClipboard = await navigator.clipboard.read()
+      } catch {}
+    })
+
+    // 写入自定义内容到系统剪贴板
+    await evaluateFunctionInTarget(
+      debuggee,
+      async (textContent, mimeType) => {
+        // 创建剪贴板项，基础是纯文本，有自定义类型则追加对应MIME
+        const clipboardItem = new ClipboardItem({
+          'text/plain': new Blob([textContent], { type: 'text/plain' }),
+          ...(mimeType && { [mimeType]: new Blob([textContent], { type: mimeType }) }),
+        })
+        // 将自定义内容写入剪贴板
+        await navigator.clipboard.write([clipboardItem])
+      },
+      [params.text, params.mimeType]
+    )
+
+    // 将剪贴板内容粘贴到目标元素中
+    await keyboard.press('ControlOrMeta+KeyV')
+
+    // 还原原始剪贴板内容
+    await evaluateFunctionInTarget(debuggee, async () => {
+      // @ts-expect-error 读取原生剪贴板所有内容并临时存入全局变量
+      const originalClipboard = window._savedClipboard
+      if (originalClipboard) {
+        try {
+          // 将缓存的原始内容写回剪贴板
+          await navigator.clipboard.write(originalClipboard)
+        } finally {
+          // @ts-expect-error 删除临时存入的全局变量
+          delete window._savedClipboard
+        }
+      }
+    })
   }
 
   /**
