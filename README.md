@@ -315,7 +315,7 @@ Main class for page-level operations.
 | `initialize()` | Initializes the page (must call before other methods) |
 | `close()` | Cleans up resources |
 | `click(selector)` | Clicks an element, The param `selector` can be any CSS selector or a string in the format `node=id`, e.g. `"node=123"`. |
-| `fill(selector, text)` | Fills an input field, The param `selector` can be any CSS selector or a string in the format `node=id`, e.g. `"node=123"`. |
+| `fill(selector, text, usePaste?)` | Fills an input field, The param `selector` can be any CSS selector or a string in the format `node=id`, e.g. `"node=123"`. Supports inputting content using the system clipboard. |
 | `scroll(direction, amount?)` | Scrolls the page |
 | `navigate(url)` | Navigates to URL |
 | `waitForNavigation(options?)` | Waits for navigation to complete |

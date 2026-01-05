@@ -178,7 +178,7 @@ export class Actions {
    * @param value The required input content
    * @param usePaste Use clipboard paste?
    */
-  async fill(selector: string, value: string, usePaste?: false): Promise<void> {
+  async fill(selector: string, value: string, usePaste?: boolean): Promise<void> {
     const { nodeId, debuggee } = await resolveAxNode(this.tabId, selector)
 
     try {
@@ -225,6 +225,7 @@ export class Actions {
     await evaluateFunctionInTarget(
       debuggee,
       async (textContent, mimeType) => {
+        if (!textContent) return
         // 创建剪贴板项，基础是纯文本，有自定义类型则追加对应MIME
         const clipboardItem = new ClipboardItem({
           'text/plain': new Blob([textContent], { type: 'text/plain' }),

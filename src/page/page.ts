@@ -65,9 +65,9 @@ export class Page {
   /**
    * Fills an input field
    */
-  async fill(selector: string, text: string): Promise<void> {
+  async fill(selector: string, text: string, usePaste?: boolean): Promise<void> {
     await this.initialize()
-    await this.actions.fill(selector, text)
+    await this.actions.fill(selector, text, usePaste)
   }
 
   /**

@@ -110,7 +110,7 @@ async function pageFill() {
     return
   }
   try {
-    await pageInstance.value.fill('input', 'Hello Browser AgentKit')
+    await pageInstance.value.fill('#chat-textarea', 'Browser AgentKit')
     log('Filled first input field')
   } catch (e) {
     log(`Fill failed: ${e}`)
@@ -286,7 +286,7 @@ function clearLogs() {
         <div class="flex flex-wrap gap-2">
           <button class="btn bg-green-600 hover:bg-green-700" @click="initPage">Initialize</button>
           <button class="btn" @click="pageClick">Click</button>
-          <button class="btn" @click="pageFill">Fill Input</button>
+          <button class="btn" @click="pageFill">Baidu Fill Input</button>
           <button class="btn" @click="pageScroll('up')">Scroll Up</button>
           <button class="btn" @click="pageScroll('down')">Scroll Down</button>
           <button class="btn" @click="waitForSelector">Wait Selector</button>

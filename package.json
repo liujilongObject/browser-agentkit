@@ -1,6 +1,6 @@
 {
   "name": "browser-agentkit",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "packageManager": "pnpm@10.0.0",
   "description": "A powerful SDK for Chrome extensions to interact with browsers and web pages",
